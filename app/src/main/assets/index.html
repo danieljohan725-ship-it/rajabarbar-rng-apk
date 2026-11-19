@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Random Number Generator 2-4 Digit</title>
+  <style>
+    :root {
+      --bg: #0c0d10;
+      --card: #15171c;
+      --accent: #e0b23c;
+      --accent-soft: rgba(224, 178, 60, 0.14);
+      --text: #f3f4f6;
+      --muted: #9ca3af;
+      --border: #262932;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 16px;
+    }
+
+    .container {
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    .brand-banner {
+      position: relative;
+      width: 100%;
+      background: var(--card);
+      border: 1px solid rgba(224, 178, 60, 0.35);
+      border-radius: 14px;
+      padding: 12px 14px 28px;
+      margin-bottom: 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      user-select: none;
+      transition: transform 0.15s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.35);
+      animation: bannerGlow 2.4s infinite ease-in-out;
+    }
+
+    .brand-banner:hover {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(224, 178, 60, 0.25), 0 8px 24px rgba(224, 178, 60, 0.14);
+    }
+
+    .brand-banner:active {
+      transform: scale(0.985);
+    }
+
+    @keyframes bannerGlow {
+      0%, 100% {
+        border-color: rgba(224, 178, 60, 0.32);
+      }
+      50% {
+        border-color: rgba(224, 178, 60, 0.8);
+      }
+    }
+
+    .brand-logo {
+      width: 100%;
+      max-width: 340px;
+      height: auto;
+      max-height: clamp(64px, 16vw, 92px);
+      object-fit: contain;
+      display: block;
+    }
+
+    .tap-hint {
+      position: absolute;
+      right: 12px;
+      bottom: 7px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--accent);
+      background: rgba(224, 178, 60, 0.12);
+      border: 1px solid rgba(224, 178, 60, 0.28);
+      padding: 2px 8px;
+      border-radius: 999px;
+    }
+
+    .tap-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      animation: tapBounce 1.3s infinite ease-in-out;
+    }
+
+    @keyframes tapBounce {
+      0%, 100% {
+        transform: translate(0, 0) scale(1);
+      }
+      50% {
+        transform: translate(-2px, -2px) scale(1.14);
+      }
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 14px;
+    }
+
+    .header h1 {
+      font-size: clamp(1.2rem, 4.4vw, 1.45rem);
+      color: var(--accent);
+      margin-bottom: 4px;
+    }
+
+    .header p {
+      font-size: clamp(0.8rem, 3.3vw, 0.88rem);
+      color: var(--muted);
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+      margin-bottom: 14px;
+    }
+
+    .label {
+      display: block;
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    .digit-group {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .digit-btn {
+      padding: 11px 8px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: #101216;
+      color: var(--text);
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.15s ease;
+    }
+
+    .digit-btn.active {
+      background: var(--accent-soft);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .field-group {
+      margin-bottom: 14px;
+    }
+
+    input[type="number"] {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: #101216;
+      color: var(--text);
+      font-size: 0.95rem;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 16px;
+      font-size: 0.88rem;
+    }
+
+    .options label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      width: 100%;
+      padding: 13px;
+      border: none;
+      border-radius: 12px;
+      background: var(--accent);
+      color: #111;
+      font-size: 1rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .result-box {
+      min-height: 92px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      justify-content: center;
+      padding: 14px;
+      border-radius: 12px;
+      background: #0e1014;
+      border: 1px dashed var(--border);
+      margin-bottom: 12px;
+    }
+
+    .num-badge {
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      padding: 8px 14px;
+      border-radius: 10px;
+      background: var(--accent-soft);
+      border: 1px solid var(--accent);
+      color: var(--accent);
+    }
+
+    .actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .btn-secondary {
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: #101216;
+      color: var(--text);
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .history-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 200px;
+      overflow-y: auto;
+      font-size: 0.88rem;
+      color: var(--muted);
+    }
+
+    .history-item {
+      padding: 8px 10px;
+      border-radius: 8px;
+      background: #101216;
+      border: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .history-item span:last-child {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .status-msg {
+      text-align: center;
+      font-size: 0.82rem;
+      color: var(--accent);
+      min-height: 18px;
+      margin-top: 8px;
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.72);
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+      padding: 14px;
+      z-index: 50;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal-sheet {
+      width: 100%;
+      max-width: 520px;
+      max-height: 85vh;
+      overflow-y: auto;
+      background: var(--card);
+      border: 1px solid rgba(224, 178, 60, 0.4);
+      border-radius: 18px;
+      padding: 18px;
+    }
+
+    .modal-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .modal-head h2 {
+      font-size: 1.05rem;
+      color: var(--accent);
+    }
+
+    .close-btn {
+      background: #101216;
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 5px 10px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .tab-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .tab-btn {
+      padding: 8px 6px;
+      border-radius: 9px;
+      border: 1px solid var(--border);
+      background: #101216;
+      color: var(--muted);
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .tab-btn.active {
+      color: var(--accent);
+      border-color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    .tab-panel {
+      display: none;
+      font-size: 0.88rem;
+      line-height: 1.55;
+      color: var(--text);
+    }
+
+    .tab-panel.active {
+      display: block;
+    }
+
+    .tab-panel p {
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .tab-panel ul {
+      padding-left: 18px;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .tab-panel li {
+      margin-bottom: 6px;
+    }
+
+    .portal-link {
+      display: block;
+      text-align: center;
+      text-decoration: none;
+      padding: 11px 14px;
+      border-radius: 10px;
+      background: var(--accent-soft);
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 0.88rem;
+      margin-top: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div
+      class="brand-banner"
+      id="brandBanner"
+      role="button"
+      tabindex="0"
+      aria-label="Buka info dan panduan Rajabarbar"
+    >
+      <img
+        id="brandLogo"
+        src="./assets/logobarbar.png"
+        alt="Logo Rajabarbar"
+        class="brand-logo"
+      />
+      <span class="tap-hint">
+        <span class="tap-icon" aria-hidden="true">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M9.5 11V5.5a1.5 1.5 0 0 1 3 0V11h1V7.5a1.5 1.5 0 0 1 3 0V11h1V9a1.5 1.5 0 0 1 3 0v5.5a6.5 6.5 0 0 1-6.5 6.5H12a6.5 6.5 0 0 1-4.6-1.9l-3.1-3.1a1.5 1.5 0 0 1 2.1-2.1L9.5 14V11Z"/>
+          </svg>
+        </span>
+        <span>Info &amp; Panduan</span>
+      </span>
+    </div>
+
+    <div class="header">
+      <h1>Random Number Generator</h1>
+      <p>Acak angka 2 digit, 3 digit, hingga 4 digit dari 0 sesuai kebutuhan Anda</p>
+    </div>
+
+    <div class="card">
+      <span class="label">Pilih Panjang Digit</span>
+      <div class="digit-group" id="digitGroup">
+        <button type="button" class="digit-btn" data-digits="2">2 Digit</button>
+        <button type="button" class="digit-btn" data-digits="3">3 Digit</button>
+        <button type="button" class="digit-btn active" data-digits="4">4 Digit</button>
+      </div>
+
+      <div class="field-group">
+        <label class="label" for="countInput">Jumlah Angka</label>
+        <input type="number" id="countInput" min="1" max="20" value="10" />
+      </div>
+
+      <div class="options">
+        <label>
+          <input type="checkbox" id="uniqueCheck" />
+          <span>Hindari angka kembar dalam satu kali generate</span>
+        </label>
+      </div>
+
+      <button type="button" class="btn-primary" id="generateBtn">GENERATE ANGKA</button>
+      <div class="status-msg" id="statusMsg"></div>
+    </div>
+
+    <div class="card">
+      <span class="label">Hasil Angka</span>
+      <div class="result-box" id="resultBox">
+        <span style="color: var(--muted); font-size: 0.9rem;">Tekan tombol Generate untuk memulai</span>
+      </div>
+      <div class="actions">
+        <button type="button" class="btn-secondary" id="copyBtn">Salin Hasil</button>
+        <button type="button" class="btn-secondary" id="clearHistoryBtn">Hapus Riwayat</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <span class="label">Riwayat Terakhir</span>
+      <ul class="history-list" id="historyList">
+        <li class="history-item"><span>Belum ada riwayat</span><span>-</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Halaman / Panel Internal di Dalam Aplikasi -->
+  <div class="modal-backdrop" id="infoModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-sheet">
+      <div class="modal-head">
+        <h2 id="modalTitle">RAJABARBAR • Pusat Info Internal</h2>
+        <button type="button" class="close-btn" id="closeModalBtn">Tutup</button>
+      </div>
+
+      <div class="tab-row">
+        <button type="button" class="tab-btn active" data-tab="guide">Panduan</button>
+        <button type="button" class="tab-btn" data-tab="about">Tentang</button>
+        <button type="button" class="tab-btn" data-tab="privacy">Privasi</button>
+      </div>
+
+      <div class="tab-panel active" id="panel-guide">
+        <p>Cara menggunakan Generator Angka 2–4 Digit di dalam aplikasi:</p>
+        <ul>
+          <li><strong>2 Digit:</strong> mengacak angka dari 00 hingga 99.</li>
+          <li><strong>3 Digit:</strong> mengacak angka dari 000 hingga 999.</li>
+          <li><strong>4 Digit:</strong> mengacak angka dari 0000 hingga 9999 (contoh: 5029 atau 0124).</li>
+          <li>Centang opsi anti-kembar bila ingin hasil yang berbeda dalam satu kali generate.</li>
+        </ul>
+        <a
+          href="https://ampgacor.rajabarbar-resmi.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="portal-link"
+        >
+          Kunjungi Situs Web
+        </a>
+      </div>
+
+      <div class="tab-panel" id="panel-about">
+        <p>Aplikasi utilitas pengacak angka cepat untuk kebutuhan harian, pengujian, atau pemilihan angka acak secara langsung di perangkat Anda.</p>
+        <p>Seluruh proses pengacakan berjalan lokal tanpa ketergantungan halaman eksternal.</p>
+        <a
+          href="https://ampgacor.rajabarbar-resmi.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="portal-link"
+        >
+          Kunjungi Situs Web
+        </a>
+      </div>
+
+      <div class="tab-panel" id="panel-privacy">
+        <p>Aplikasi ini tidak meminta izin akses data sensitif perangkat, tidak menyimpan riwayat ke server eksternal, dan menjaga seluruh hasil acak tetap berada di sesi lokal perangkat pengguna.</p>
+        <a
+          href="https://ampgacor.rajabarbar-resmi.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="portal-link"
+        >
+          Kunjungi Situs Web
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const brandLogo = document.getElementById('brandLogo');
+    brandLogo.addEventListener('error', () => {
+      const fallback = brandLogo.dataset.fallback;
+      if (fallback && brandLogo.src !== fallback) {
+        brandLogo.src = fallback;
+      } else {
+        brandLogo.closest('.brand-banner').style.display = 'none';
+      }
+    });
+
+    let selectedDigits = 4;
+    let latestNumbers = [];
+    const historyData = [];
+
+    const brandBanner = document.getElementById('brandBanner');
+    const infoModal = document.getElementById('infoModal');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const tabPanels = document.querySelectorAll('.tab-panel');
+
+    const digitBtns = document.querySelectorAll('.digit-btn');
+    const countInput = document.getElementById('countInput');
+    const uniqueCheck = document.getElementById('uniqueCheck');
+    const generateBtn = document.getElementById('generateBtn');
+    const resultBox = document.getElementById('resultBox');
+    const copyBtn = document.getElementById('copyBtn');
+    const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+    const historyList = document.getElementById('historyList');
+    const statusMsg = document.getElementById('statusMsg');
+
+    function openModal() {
+      infoModal.classList.add('open');
+    }
+
+    function closeModal() {
+      infoModal.classList.remove('open');
+    }
+
+    brandBanner.addEventListener('click', openModal);
+    brandBanner.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openModal();
+      }
+    });
+
+    closeModalBtn.addEventListener('click', closeModal);
+    infoModal.addEventListener('click', (e) => {
+      if (e.target === infoModal) closeModal();
+    });
+
+    tabBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        tabBtns.forEach(b => b.classList.remove('active'));
+        tabPanels.forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById('panel-' + btn.dataset.tab).classList.add('active');
+      });
+    });
+
+    digitBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        digitBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        selectedDigits = parseInt(btn.dataset.digits, 10);
+      });
+    });
+
+    function randomInt(min, max) {
+      const range = max - min + 1;
+      const arr = new Uint32Array(1);
+      window.crypto.getRandomValues(arr);
+      return min + (arr[0] % range);
+    }
+
+    function formatDigits(num, digits) {
+      return String(num).padStart(digits, '0');
+    }
+
+    function generateNumbers() {
+      statusMsg.textContent = '';
+      let count = parseInt(countInput.value, 10);
+      if (isNaN(count) || count < 1) count = 1;
+      if (count > 20) {
+        count = 20;
+        countInput.value = 20;
+      }
+
+      const min = 0;
+      const max = Math.pow(10, selectedDigits) - 1;
+      const maxPossible = max - min + 1;
+
+      const results = [];
+      const used = new Set();
+
+      if (uniqueCheck.checked && count > maxPossible) {
+        count = maxPossible;
+        countInput.value = maxPossible;
+        statusMsg.textContent = `Maksimal ${maxPossible} angka unik untuk ${selectedDigits} digit.`;
+      }
+
+      while (results.length < count) {
+        const val = randomInt(min, max);
+        if (uniqueCheck.checked) {
+          if (used.has(val)) continue;
+          used.add(val);
+        }
+        results.push(formatDigits(val, selectedDigits));
+      }
+
+      latestNumbers = results;
+      renderResults(results);
+      addHistory(selectedDigits, results);
+    }
+
+    function renderResults(list) {
+      resultBox.innerHTML = '';
+      list.forEach(item => {
+        const badge = document.createElement('div');
+        badge.className = 'num-badge';
+        badge.textContent = item;
+        resultBox.appendChild(badge);
+      });
+    }
+
+    function addHistory(digits, list) {
+      const timeStr = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+      historyData.unshift({
+        meta: `${digits} digit • ${timeStr}`,
+        values: list.join(', ')
+      });
+      if (historyData.length > 15) historyData.pop();
+      renderHistory();
+    }
+
+    function renderHistory() {
+      if (historyData.length === 0) {
+        historyList.innerHTML = '<li class="history-item"><span>Belum ada riwayat</span><span>-</span></li>';
+        return;
+      }
+      historyList.innerHTML = historyData
+        .map(h => `<li class="history-item"><span>${h.meta}</span><span>${h.values}</span></li>`)
+        .join('');
+    }
+
+    generateBtn.addEventListener('click', generateNumbers);
+
+    copyBtn.addEventListener('click', async () => {
+      if (!latestNumbers.length) {
+        statusMsg.textContent = 'Belum ada angka untuk disalin.';
+        return;
+      }
+      const textToCopy = latestNumbers.join(', ');
+      try {
+        await navigator.clipboard.writeText(textToCopy);
+        statusMsg.textContent = 'Hasil berhasil disalin ke clipboard.';
+      } catch {
+        statusMsg.textContent = 'Gagal menyalin otomatis, silakan salin manual.';
+      }
+    });
+
+    clearHistoryBtn.addEventListener('click', () => {
+      historyData.length = 0;
+      renderHistory();
+      statusMsg.textContent = 'Riwayat dibersihkan.';
+    });
+  </script>
+</body>
+</html>
