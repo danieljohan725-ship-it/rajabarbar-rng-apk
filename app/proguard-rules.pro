@@ -1,0 +1,1 @@
+-keep class com.barbarhub.rngdigits.MainActivity { *; }
