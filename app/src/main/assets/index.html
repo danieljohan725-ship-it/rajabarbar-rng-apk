@@ -36,7 +36,7 @@
       background: var(--card);
       border: 1px solid rgba(224, 178, 60, 0.35);
       border-radius: 14px;
-      padding: 12px 14px 28px;
+      padding: 12px 14px 34px;
       margin-bottom: 14px;
       display: flex;
       flex-direction: column;
@@ -79,23 +79,42 @@
     .tap-hint {
       position: absolute;
       right: 12px;
-      bottom: 7px;
+      bottom: 8px;
       display: inline-flex;
       align-items: center;
-      gap: 5px;
-      font-size: 0.72rem;
-      font-weight: 700;
-      color: var(--accent);
-      background: rgba(224, 178, 60, 0.12);
-      border: 1px solid rgba(224, 178, 60, 0.28);
-      padding: 2px 8px;
+      gap: 6px;
+      font-size: 0.76rem;
+      font-weight: 800;
+      letter-spacing: 0.3px;
+      color: #ff2424;
+      text-shadow: 0 0 8px rgba(255, 36, 36, 0.55);
+      background: rgba(255, 24, 24, 0.16);
+      border: 1.5px solid #ff2424;
+      padding: 3px 10px;
       border-radius: 999px;
+      box-shadow: 0 0 12px rgba(255, 36, 36, 0.55), inset 0 0 6px rgba(255, 36, 36, 0.22);
+      animation: redOutlinePulse 1.4s infinite ease-in-out;
+    }
+
+    @keyframes redOutlinePulse {
+      0%, 100% {
+        border-color: #ff2424;
+        box-shadow: 0 0 10px rgba(255, 36, 36, 0.45), inset 0 0 5px rgba(255, 36, 36, 0.18);
+        transform: scale(1);
+      }
+      50% {
+        border-color: #ff4d4d;
+        box-shadow: 0 0 18px rgba(255, 36, 36, 0.85), inset 0 0 8px rgba(255, 36, 36, 0.32);
+        transform: scale(1.04);
+      }
     }
 
     .tap-icon {
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      color: #ff2424;
+      filter: drop-shadow(0 0 6px rgba(255, 36, 36, 0.65));
       animation: tapBounce 1.3s infinite ease-in-out;
     }
 
